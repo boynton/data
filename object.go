@@ -7,7 +7,8 @@ import (
 	"strings"
 )
 
-//Data - a map that preserves the order of the keys (which are always converted to strings). Values are anything.
+// data.Object - a map that preserves the order of the keys (which are always converted
+//               to strings). Values can be anything.
 type Object struct {
 	keys     []string
 	bindings map[string]interface{}
