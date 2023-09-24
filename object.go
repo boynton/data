@@ -8,7 +8,8 @@ import (
 )
 
 // data.Object - a map that preserves the order of the keys (which are always converted
-//               to strings). Values can be anything.
+//
+//	to strings). Values can be anything.
 type Object struct {
 	keys     []string
 	bindings map[string]interface{}
@@ -78,7 +79,7 @@ func (s *Object) UnmarshalJSON(data []byte) error {
 }
 
 func (s *Object) String() string {
-	return Json(s)
+	return JsonEncode(s)
 }
 
 func (s Object) MarshalJSON() ([]byte, error) {
@@ -175,8 +176,8 @@ func ToString(obj interface{}) string {
 func (s *Object) GetString(key string) string {
 	return AsString(s.Get(key))
 }
-func (s *Object) GetStringArray(key string) []string {
-	return AsStringArray(s.Get(key))
+func (s *Object) GetStringSlice(key string) []string {
+	return AsStringSlice(s.Get(key))
 }
 func (s *Object) GetBool(key string) bool {
 	return AsBool(s.Get(key))
@@ -188,7 +189,7 @@ func (s *Object) GetInt64(key string) int64 {
 	return AsInt64(s.Get(key))
 }
 func (s *Object) GetArray(key string) []interface{} {
-	return AsArray(s.Get(key))
+	return AsSlice(s.Get(key))
 }
 func (s *Object) GetMap(key string) map[string]interface{} {
 	return AsMap(s.Get(key))
@@ -199,6 +200,8 @@ func (s *Object) GetDecimal(key string) *Decimal {
 func (s *Object) GetObject(key string) *Object {
 	return AsObject(s.Get(key))
 }
+
+/*
 func AsObject(v interface{}) *Object {
 	if v != nil {
 		switch m := v.(type) {
@@ -350,3 +353,4 @@ func GetMap(m map[string]interface{}, key string) map[string]interface{} {
 func GetDecimal(m map[string]interface{}, key string) *Decimal {
 	return AsDecimal(Get(m, key))
 }
+*/
