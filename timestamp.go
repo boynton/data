@@ -30,6 +30,11 @@ type Timestamp struct {
 	time.Time
 }
 
+func Now() Timestamp {
+	now := time.Now()
+	return Timestamp{Time: now}
+}
+
 const RFC3339Milli = "%d-%02d-%02dT%02d:%02d:%02d.%03dZ"
 
 func (ts Timestamp) String() string {

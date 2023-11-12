@@ -149,6 +149,8 @@ func AsInt(v interface{}) int {
 		return int(n)
 	case int:
 		return n
+	case *Integer:
+		return n.AsInt()
 	case *Decimal:
 		return n.AsInt()
 	}
@@ -156,8 +158,19 @@ func AsInt(v interface{}) int {
 }
 
 func AsInt64(v interface{}) int64 {
-	if n, ok := v.(float64); ok {
+	switch n := v.(type) {
+	case int64:
+		return n
+	case float64:
 		return int64(n)
+	case int32:
+		return int64(n)
+	case int:
+		return int64(n)
+	case *Integer:
+		return n.AsInt64()
+	case *Decimal:
+		return n.AsInt64()
 	}
 	return 0
 }
