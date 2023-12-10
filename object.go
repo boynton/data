@@ -79,6 +79,9 @@ func (s *Object) UnmarshalJSON(data []byte) error {
 }
 
 func (s *Object) String() string {
+	//	if len(s.bindings) > 0 {
+	//		panic("Object.String(): non-empty!")
+	//	}
 	return JsonEncode(s)
 }
 

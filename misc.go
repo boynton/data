@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strings"
 )
 
@@ -117,6 +118,10 @@ func AsStringSlice(v interface{}) []string {
 	return sa
 }
 
+func TypeOf(v interface{}) string {
+	return fmt.Sprint(reflect.TypeOf(v))
+}
+
 func AsString(v interface{}) string {
 	if v != nil {
 		switch s := v.(type) {
@@ -124,6 +129,9 @@ func AsString(v interface{}) string {
 			return s
 		case *string:
 			return *s
+		default:
+			fmt.Println("not a string or *string:", TypeOf(v))
+			panic("what?!")
 		}
 	}
 	return ""
