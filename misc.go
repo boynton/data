@@ -35,6 +35,7 @@ func JsonDecode(j string) *Object {
 	var v Object
 	err := json.Unmarshal(([]byte)(j), &v)
 	if err != nil {
+		fmt.Printf("whoops: %s\n", err)
 		return nil
 	}
 	return &v
@@ -49,21 +50,9 @@ func AsMap(v interface{}) map[string]interface{} {
 		switch m := v.(type) {
 		case map[string]interface{}:
 			return m
-			//		case *Struct:
-			//			return m.value.bindings
 		default:
 			return nil
 		}
-	}
-	return nil
-}
-
-func AsArray(o interface{}) *Array {
-	switch v := o.(type) {
-	case *Array:
-		return v
-	case []interface{}:
-		return ArrayFromSlice(v)
 	}
 	return nil
 }
@@ -85,8 +74,6 @@ func AsSlice(v interface{}) []interface{} {
 		switch a := v.(type) {
 		case []interface{}:
 			return a
-		case *Array:
-			return a.Elements
 		default:
 			return nil
 		}
@@ -100,12 +87,6 @@ func AsStringSlice(v interface{}) []string {
 	if a != nil {
 		for _, i := range a {
 			switch s := i.(type) {
-			case *Array:
-				var lst []string
-				for _, v := range s.Elements {
-					lst = append(lst, AsString(v))
-				}
-				return lst
 			case *string:
 				sa = append(sa, *s)
 			case string:

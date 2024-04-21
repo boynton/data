@@ -35,6 +35,54 @@ func NewMap[V any]() *Map[V] {
 	}
 }
 
+func JsonKeysInOrder(data []byte) ([]string, error) {
+	var end = fmt.Errorf("invalid end of array or object")
+
+	var skipValue func(d *json.Decoder) error
+	skipValue = func(d *json.Decoder) error {
+		t, err := d.Token()
+		if err != nil {
+			return err
+		}
+		switch t {
+		case json.Delim('['), json.Delim('{'):
+			for {
+				if err := skipValue(d); err != nil {
+					if err == end {
+						break
+					}
+					return err
+				}
+			}
+		case json.Delim(']'), json.Delim('}'):
+			return end
+		}
+		return nil
+	}
+	d := json.NewDecoder(bytes.NewReader(data))
+	t, err := d.Token()
+	if err != nil {
+		return nil, err
+	}
+	if t != json.Delim('{') {
+		return nil, fmt.Errorf("expected start of object")
+	}
+	var keys []string
+	for {
+		t, err := d.Token()
+		if err != nil {
+			return nil, err
+		}
+		if t == json.Delim('}') {
+			return keys, nil
+		}
+		keys = append(keys, t.(string))
+		if err := skipValue(d); err != nil {
+			return nil, err
+		}
+	}
+}
+
 func (s *Map[V]) UnmarshalJSON(data []byte) error {
 	keys, err := JsonKeysInOrder(data)
 	if err != nil {
