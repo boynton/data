@@ -146,6 +146,14 @@ func (s *Object) Bindings() []*Binding {
 	return s.bindings
 }
 
+func (s *Object) Keys() []string {
+	var result []string
+	for _, b := range s.bindings {
+		result = append(result, b.Key)
+	}
+	return result
+}
+
 func (s *Object) Has(key string) bool {
 	if s != nil {
 		if _, ok := s.index[key]; ok {
